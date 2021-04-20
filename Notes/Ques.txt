@@ -1,0 +1,1 @@
+1. If list can be used as both stack and queue why there is another implementation of queue in python.
