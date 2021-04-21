@@ -1,5 +1,13 @@
 #!/usr/bin/python3
-
+#AUTHOR OF THIS CODE zeal2end feel free to fork and make changes.
+#TO RUN THIS CODE ON CUSTOM MATRIX REMOVE THE ARGS FROM BOARDTYPE IN MAIN() i.e Board = BoardType(test) -->> Board = BoardType()
+# instructions for CUSTOM INPUT :
+'''
+    3
+   0 4 7
+   3 2 6
+   2 6 8  where x y z is the format and x,y is the corrdinate in matrix
+'''
 from copy import copy
 from time import sleep
 
@@ -37,14 +45,22 @@ class BoardType():
             self.m = matrix
             self.FreeCount = NCELL - n
         self.move = [[0,0] for _ in range(NCELL+1)] #inside init
-        self.Index = -1
-        self.move[self.Index] = self.next_square()
+        self.Index = 0
+        print("Sudoku Puzzle : ")
+        self.printBoard()
+        print("One of the Solution is : ")
 
-    def next_square(self): # this is to be update for more complex processing
+    def next_square(self): # this is to be update for more complex processing nxt task
+        best = [0,0]
+        cur = 10
         for i in range(DIMENSION):
             for j in range(DIMENSION):
-                if not self.m[i][j]:
-                    return [i,j]
+                if self.m[i][j] == 0:
+                    now =len(self.Possible([i,j]))
+                    if now < cur:cur = now;best = [i,j]
+                    if now == 1:
+                        return [i,j]
+        return best
 
     def printBoard(self):
         for a in self.m:
@@ -58,22 +74,22 @@ class BoardType():
             if a>=i and a <i+3:
                 return i
 
-    def Construct_Candidate(self):
-        possible = [i for i in range(1,DIMENSION+1)]
-        self.move[self.Index] = self.next_square() # bug noticed 0 is not set so it will go for it again.
-        # checking row
-        x,y = map(int,self.move[self.Index])
-        abonded = list(filter(lambda c:c!=0,self.m[x]))
-        #checking col
-        abonded += [self.m[i][y] for i in range(DIMENSION) if self.m[i][y]!=0]
-        #checking the inner cube
-        x = self.findThree(x)
-        y = self.findThree(y)
+    #new candidate
+    #first create a function to find possibles for a given x,y
+    def Possible(self,pair):
+        x,y=map(int,pair)
+        considered = [i for i in range(1,10)]
+        abonded = list(filter(lambda x : x!=0,self.m[x]))
+        abonded += [self.m[i][y] for i in range(DIMENSION) if self.m[i][y]]
+        x,y = self.findThree(x),self.findThree(y)
         for i in range(3):
             a = self.m[x+i][y:y+3]
-            abonded += list(filter(lambda c:c!=0,a))
-        return list(filter(lambda c:c not in abonded,possible))
-        #done Construct_Candidate
+            abonded += list(filter(lambda x:x!=0,a))
+        return list(filter(lambda x:x not in abonded,considered))
+
+    def Construct_Candidate(self):
+        self.move[self.Index] = self.next_square()
+        return self.Possible(self.move[self.Index])
 
     def make_move(self,x,y,a,b):
         self.m[x][y] = a
@@ -88,6 +104,8 @@ def Sudoku(Board):
     else:
         cur = copy(Board.Index)
         possible = Board.Construct_Candidate()
+        #print(possible,Board.move[Board.Index])
+        # create a Construct_Candidate '''
         for a in possible:
             x,y = map(int,Board.move[cur])
             Board.make_move(x,y,a,-1)
