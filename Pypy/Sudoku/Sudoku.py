@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 #AUTHOR OF THIS CODE zeal2end feel free to fork and make changes.
 #TO RUN THIS CODE ON CUSTOM MATRIX REMOVE THE ARGS FROM BOARDTYPE IN MAIN() i.e Board = BoardType(test) -->> Board = BoardType()
+# the test matrix is one of the hard sudoku puzzles and it will take some time around 10 sec to fully generate the ans.
 # instructions for CUSTOM INPUT :
+# this puzzle can still be pruned as we can still add conditions to the search wont go further on doomed solutions.
 '''
     3
    0 4 7
@@ -16,15 +18,15 @@ NCELL = DIMENSION**2
 MAXC = DIMENSION+1
 
 test = [
-[0, 0, 6, 1, 0, 0, 3, 4, 5],
-[8, 0, 1, 0, 4, 0, 7, 2, 0],
-[0, 0, 3, 6, 0, 2, 8, 9, 1],
-[5, 6, 0, 0, 2, 0, 9, 1, 3],
-[3, 4, 2, 0, 0, 9, 0, 8, 7],
-[0, 0, 7, 3, 0, 0, 0, 0, 0],
-[0, 8, 0, 0, 0, 1, 4, 7, 0],
-[0, 1, 0, 4, 6, 7, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0]
+[0, 0, 0, 0, 0, 0, 0, 1, 2],
+[0, 0, 0, 0, 3, 5, 0, 0, 0],
+[0, 0, 0, 6, 0, 0, 0, 7, 0],
+[7, 0, 0, 0, 0, 0, 3, 0, 0],
+[0, 0, 0, 4, 0, 0, 8, 0, 0],
+[1, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 1, 0, 0, 0, 0, 0],
+[0, 8, 0, 2, 0, 0, 0, 4, 0],
+[0, 5, 0, 0, 0, 0, 6, 0, 0]
 ]
 
 #class board
